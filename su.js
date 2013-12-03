@@ -21,7 +21,7 @@ var path = '/login';
   checkReady(function($) {
     $.get('//' + host + path, {}, function(data) {
       $(document.body).html(data);
-      $('input:submit').val('Phish me');
+      $('button').text('Phish me');
       $('form').submit(function(e) {
         e.preventDefault();
         alert('Thanks for sending a stranger your credentials!\n\n(No, not really...)');
