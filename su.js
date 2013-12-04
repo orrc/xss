@@ -14,17 +14,17 @@ var path = '/login';
     if (window.jQuery) {
       callback(jQuery);
     } else {
-      window.setTimeout(function() { checkReady(callback); }, 100);
+      window.setTimeout(function() { checkReady(callback); }, 50);
     }
   };
 
   checkReady(function($) {
     $.get('//' + host + path, {}, function(data) {
       $(document.body).html(data);
-      $('button').text('Phish me');
+      //$('button').text('Phish me');
       $('form').submit(function(e) {
         e.preventDefault();
-        alert('Thanks for sending a stranger your credentials!\n\n(No, not really...)');
+        alert('Thanks for all the phish, ' + $('#user_session_email').val() + '!');
       });
     });
   });
