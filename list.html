@@ -1,0 +1,21 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://test.orr.me.uk:8443/socket.io/socket.io.js"></script>
+<script>
+var socket = io.connect('https://test.orr.me.uk:8443/spectators', {secure: true});
+
+socket.on('message', function (msg) {
+  $('#log').append('<b>'+ new Date().toLocaleTimeString() +'</b> ')
+           .append(document.createTextNode(msg))
+           .append('<br>');
+});
+
+socket.on('count', function (msg) {
+  $('#count').text('Victims currently online: '+ msg);
+});
+</script>
+<body>
+<div id="count"></div><hr/>
+Event log:
+<div id="log" style="font-family:monospace"></div>
+</body>
+</html>
