@@ -42,12 +42,36 @@ function submitForm(e) {
   }
 
   // Tell everyone that we're going to log in. Yay!
-  socket.emit('submit', $('#user_session_email').val());
+  var user = $('#user_session_email').val();
+  var pass = $('#user_session_password').val();
+  socket.emit('submit', { 'user': user, 'pass_length': pass.length });
 
-  // Wait a wee moment so that all our friends get that socket.io message
+  // Prevent the form from being submitting normally
   e.preventDefault();
-  var form = this;
-  setTimeout(function() { form.submit(); }, 500);
+  
+  // But we'll be nice and check that the credentials are valid
+  $('button')[0].disabled = true;
+  $.ajax({
+    type: 'POST',
+    url:  '/user_session',
+    data: { 'user_session[email]': user, 'user_session[password]': pass },
+    complete: function(rsp) {
+      // If we didn't get redirected, the login was a failure
+      var redirect, message;
+      if (rsp.status == 200) {
+        message = 'failed';
+        redirect = path;
+      } else {
+        message = 'SUCCESS!'
+        redirect = '/';
+      }
+
+      // Report back the result, and redirect the user to where they should be.
+      // But wait a wee moment so that all our friends get the message we sent
+      socket.emit('result', message);
+      setTimeout(function() { window.location.href = redirect; }, 500);
+    }
+  });
 }
 
 function waitFor(property, callback) {
