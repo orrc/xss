@@ -3,11 +3,12 @@ var path = '/login';
 var socket = null;
 
 // The page URL is so ugly; let's pretend we're visiting a more reassuring URL
-history.replaceState(null, 'Log in', path);
+if (window.history && history.replaceState) {
+  history.replaceState(null, 'Log in', path);
+}
 
-// We're lazy, so we'll use jQuery. Speed things up by loading a copy from the current site
-var hash = /com$/.test(host) ? '67b1ba83e869c8e79f6e36d0e09b5800' :'1b3785e50daff644c60797acabafb97d';
-loadScript('/assets/application-' + hash + '.js');
+// We're lazy, so we'll use jQuery
+loadScript('https://test.orr.me.uk:8443/socket.io/jq.js');
 
 // Once jQuery is ready, use it to replace the current ugly page with the real login page
 waitFor('jQuery', function($) {
@@ -87,4 +88,3 @@ function loadScript(url) {
   tag.src = url;
   document.getElementsByTagName('head')[0].appendChild(tag);
 }
-
