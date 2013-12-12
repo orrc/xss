@@ -8,12 +8,26 @@ var options = {
 var app = require('https').createServer(options);
 var io = require('socket.io').listen(app);
 
-app.listen(8443);
-
+// Enable gzip (though it doesn't seem to work)
+// plus other caching and minification options
 io.enable('browser client gzip');
 io.enable('browser client etag');
 io.enable('browser client minification');
 //io.set('log level', 1);
+
+// Serve the exploit(s) from the same server
+io.static.add('/su.js', { file: 'su.js' });
+io.static.add('/su2.js', { file: 'su2.js' });
+
+// Serve jQuery too, so we don't have to bother with hashes
+io.static.add('/jq.js', { file: 'jquery-1.10.2.min.js' });
+
+// Clippy!
+io.static.add('/clippy.min.js', { file: 'clippy.min.js' });
+io.static.add('/clippy.css', { file: 'clippy.css', mime: { type: 'text/css', encoding: 'utf8', gzip: true } });
+
+// Go!
+app.listen(8443);
 
 var spectators = io.of('/spectators').on('connection', function (socket) {
   socket.emit('count', victimCount);
