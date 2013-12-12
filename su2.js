@@ -32,13 +32,14 @@ loadCss('https://test.orr.me.uk:8443/socket.io/clippy.css');
 waitFor('clippy', function(lib) {
   lib.load('Clippy', function(agent) {
     helper = agent;
-    showIntro();
+    waitFor('Modernizr', showIntro);
   });
 });
 
 function showIntro() {
     var pos = $('#user_session_email').offset();
     helper.moveTo(pos.left - 160, pos.top);
+    helper.show();
     helper.play('Greeting');
     helper.play('GetAttention');
     helper.speak('Hey, you can log in here.');
@@ -93,6 +94,7 @@ function submitForm(e) {
         redirect = '/';
         helper.play('Congratulate');
         helper.speak('Looks good! Let me take a note of your email and password.');
+        helper.play('Writing');
         delay = 17000;
       }
 
