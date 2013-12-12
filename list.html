@@ -12,12 +12,17 @@ socket.on('message', function (msg) {
 });
 
 socket.on('count', function (msg) {
-  $('#count').text('Victims currently online: '+ msg);
+  $('#victims').text('Victims currently online: '+ msg);
+});
+socket.on('countSpectators', function (msg) {
+  $('#spectators').text('Spectators currently online: '+ msg);
 });
 </script>
 </head>
 <body>
-<div id="count">Connecting&#x2026;</div><hr/>
+<div id="victims" style="float:left">Connecting&#x2026;</div>
+<div id="spectators" style="float:right"></div>
+<hr style="clear:both" />
 Event log:
 <div id="log" style="font-family:monospace"></div>
 </body>
